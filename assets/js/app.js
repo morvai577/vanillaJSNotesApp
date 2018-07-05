@@ -48,6 +48,9 @@ function removeNote(e) {
     if(e.target.classList.contains('remove-tweet')) {
         e.target.parentElement.remove();
     }
+
+    // Remove from storage
+    removeNoteLocalStorage(e.target.parentElement.textContent);
 }
 
 // Save note to local storage
@@ -97,4 +100,25 @@ function localStorageOnLoad() {
         // Add to the list
         notesList.appendChild(li);
     });
+}
+
+// Removes note from local storage
+
+function removeNoteLocalStorage(note) {
+    // Get notes from storage
+    let notes = getNoteFromLocalStorage();
+
+    // Remove X from the note
+    const noteDelete = note.substring(0, note.length - 1);
+
+    // Look throughout notes list and remove the note that's equal
+    notes.forEach(function(notesLS, index){
+        if(noteDelete === notesLS) {
+            notes.splice(index, 1);
+        }
+    });
+
+    // Save the data
+    localStorage.setItem('notes', JSON.stringify(notes));
+
 }
